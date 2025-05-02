@@ -3,26 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🔥 Best E-Commerce Deals</title>
+  <meta name="description" content="Best handpicked Amazon and Flipkart deals. Shop smart and save big today.">
+  <title>Best E-Commerce Deals</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
-      background: #f4f4f4;
+      background: #f9fafb;
+      color: #333;
     }
 
     header {
-      background: linear-gradient(120deg, #ff6a00, #ee0979);
+      background: #1e88e5;
       color: white;
       padding: 2rem;
       text-align: center;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
     header h1 {
       margin: 0;
-      font-size: 2.5rem;
+      font-size: 2.2rem;
+      font-weight: 600;
+    }
+
+    header p {
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      font-weight: 400;
     }
 
     .container {
@@ -35,45 +44,53 @@
 
     .card {
       background: white;
-      border-radius: 20px;
+      border-radius: 16px;
       overflow: hidden;
       width: 300px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
-      cursor: pointer;
+      display: flex;
+      flex-direction: column;
     }
 
     .card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+      transform: translateY(-8px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
     }
 
     .card img {
       width: 100%;
-      height: 200px;
+      height: 220px;
       object-fit: cover;
+      border-bottom: 1px solid #eee;
     }
 
     .card-body {
-      padding: 1rem;
+      padding: 1.2rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .card-title {
       font-weight: 600;
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+      margin-bottom: 0.6rem;
+      color: #222;
     }
 
     .card-desc {
       font-size: 0.95rem;
-      color: #666;
+      color: #555;
       margin-bottom: 1rem;
     }
 
     .btn {
       display: inline-block;
-      padding: 0.7rem 1.2rem;
-      background: linear-gradient(135deg, #ff6a00, #ee0979);
+      text-align: center;
+      padding: 0.8rem 1rem;
+      background: #1e88e5;
       color: white;
       border-radius: 30px;
       text-decoration: none;
@@ -82,14 +99,16 @@
     }
 
     .btn:hover {
-      background: linear-gradient(135deg, #ee0979, #ff6a00);
+      background: #1565c0;
     }
 
     footer {
       text-align: center;
-      padding: 1rem;
+      padding: 1.5rem 1rem;
       font-size: 0.85rem;
-      color: #999;
+      color: #777;
+      background: #f1f1f1;
+      margin-top: 2rem;
     }
 
     @media (max-width: 768px) {
@@ -103,27 +122,28 @@
 <body>
 
 <header>
-  <h1>🔥 Best Deals of the Day</h1>
-  <p>Curated offers from Amazon, Flipkart, and more!</p>
+  <h1>Best Deals of the Day</h1>
+  <p>Curated offers from trusted platforms</p>
 </header>
 
+<main class="container">
 
- <!-- Product Card -->
-<div class="card">
-  <img src="https://f.media-amazon.com/images/I/71fX8k5fCzL._SX522_.jpg" alt="Carlington Premium Watch for Men">
-  <div class="card-body">
-    <div class="card-title">Carlington Premium Men's Watch</div>
-    <div class="card-desc">Black stainless steel, scratch-resistant. 76% OFF – Great Summer Sale!</div>
-    <a href="https://amzn.to/3YnItWD" class="btn" target="_blank">Buy Now</a>
+  <!-- Product Card -->
+  <div class="card">
+    <img src="https://m.media-amazon.com/images/I/71fX8k5fCzL._SX522_.jpg" alt="Carlington Premium Watch for Men">
+    <div class="card-body">
+      <div>
+        <div class="card-title">Carlington Premium Men's Watch</div>
+        <div class="card-desc">Black stainless steel, scratch-resistant, 76% OFF – Great Summer Sale!</div>
+      </div>
+      <a href="https://amzn.to/3YnItWD" class="btn" target="_blank" rel="nofollow noopener sponsored">View on Amazon</a>
+    </div>
   </div>
-</div>
 
-
-  
-
+</main>
 
 <footer>
-  © 2025 YourDealSite.com | All rights reserved
+  Disclaimer: As an Amazon Associate, we earn from qualifying purchases. <br> © 2025 ecomdeals.netlify.app | All rights reserved.
 </footer>
 
 </body>
