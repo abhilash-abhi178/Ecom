@@ -7,19 +7,41 @@
   <title>Best E-Commerce Deals</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg-color: #f9fafb;
+      --text-color: #333;
+      --card-bg: white;
+      --header-bg: #1e88e5;
+      --btn-bg: #1e88e5;
+      --btn-hover: #1565c0;
+      --footer-bg: #f1f1f1;
+    }
+
+    body.dark {
+      --bg-color: #121212;
+      --text-color: #e0e0e0;
+      --card-bg: #1e1e1e;
+      --header-bg: #333;
+      --btn-bg: #1565c0;
+      --btn-hover: #1e88e5;
+      --footer-bg: #1a1a1a;
+    }
+
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
-      background: #f9fafb;
-      color: #333;
+      background: var(--bg-color);
+      color: var(--text-color);
+      transition: all 0.3s ease;
     }
 
     header {
-      background: #1e88e5;
+      background: var(--header-bg);
       color: white;
       padding: 2rem;
       text-align: center;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      position: relative;
     }
 
     header h1 {
@@ -34,6 +56,24 @@
       font-weight: 400;
     }
 
+    .toggle-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: var(--btn-bg);
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s ease;
+    }
+
+    .toggle-btn:hover {
+      background: var(--btn-hover);
+    }
+
     .container {
       display: flex;
       flex-wrap: wrap;
@@ -43,12 +83,12 @@
     }
 
     .card {
-      background: white;
+      background: var(--card-bg);
       border-radius: 16px;
       overflow: hidden;
       width: 300px;
       box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
       display: flex;
       flex-direction: column;
     }
@@ -77,20 +117,24 @@
       font-weight: 600;
       font-size: 1.1rem;
       margin-bottom: 0.6rem;
-      color: #222;
+      color: var(--text-color);
     }
 
     .card-desc {
       font-size: 0.95rem;
-      color: #555;
+      color: #777;
       margin-bottom: 1rem;
+    }
+
+    body.dark .card-desc {
+      color: #bbb;
     }
 
     .btn {
       display: inline-block;
       text-align: center;
       padding: 0.8rem 1rem;
-      background: #1e88e5;
+      background: var(--btn-bg);
       color: white;
       border-radius: 30px;
       text-decoration: none;
@@ -99,7 +143,7 @@
     }
 
     .btn:hover {
-      background: #1565c0;
+      background: var(--btn-hover);
     }
 
     footer {
@@ -107,8 +151,13 @@
       padding: 1.5rem 1rem;
       font-size: 0.85rem;
       color: #777;
-      background: #f1f1f1;
+      background: var(--footer-bg);
       margin-top: 2rem;
+      transition: background 0.3s ease;
+    }
+
+    body.dark footer {
+      color: #aaa;
     }
 
     @media (max-width: 768px) {
@@ -122,13 +171,15 @@
 <body>
 
 <header>
-  <h1>Best Deals </h1>
+  <h1>Best Deals</h1>
   <p>Curated offers from trusted platforms</p>
+  <button class="toggle-btn" onclick="toggleDarkMode()">Toggle Dark Mode</button>
 </header>
 
 <main class="container">
 
-  <!-- Product Card -->
+  <!-- Amazon Product Cards -->
+
   <div class="card">
     <img src="https://m.media-amazon.com/images/I/71fX8k5fCzL._SX522_.jpg" alt="Carlington Premium Watch for Men">
     <div class="card-body">
@@ -140,6 +191,32 @@
     </div>
   </div>
 
+  <div class="card">
+    <img src="https://f.media-amazon.com/images/I/81aLbywJ57L._SX522_.jpg" alt="VARS Decor Wooden Set-Top Box Stand">
+    <div class="card-body">
+      <div>
+        <div class="card-title">VARS Decor Wooden Set-Top Box Stand</div>
+        <div class="card-desc">Elegant wooden holder, 52% OFF – Perfect for modern TV setups!</div>
+      </div>
+      <a href="https://amzn.to/4lUuK3z" class="btn" target="_blank" rel="nofollow noopener sponsored">View on Amazon</a>
+    </div>
+  </div>
+
+  <!-- Flipkart Product Cards -->
+
+  <div class="card">
+    <img src="https://rukminim2.flixcart.com/image/416/416/l0lbrm80/watch/c/y/o/1-rogue-blk-blk-fastrack-men-original-imagcc7nzqczfmxz.jpeg" alt="Fastrack Men's Watch">
+    <div class="card-body">
+      <div>
+        <div class="card-title">Fastrack Men's Watch</div>
+        <div class="card-desc">Bold black dial, waterproof design — Flat 40% OFF – Limited Stock!</div>
+      </div>
+      <a href="https://www.flipkart.com" class="btn" target="_blank" rel="nofollow noopener sponsored">View on Flipkart</a>
+    </div>
+  </div>
+
+
+
 </main>
 
 <footer>
@@ -147,6 +224,11 @@
   © 2025 ecomdeals.netlify.app | All rights reserved.
 </footer>
 
+<script>
+  function toggleDarkMode() {
+    document.body.classList.toggle('dark');
+  }
+</script>
 
 </body>
 </html>
