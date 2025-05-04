@@ -171,10 +171,12 @@
 <body>
 
 <header>
+  <img src="Logo web.png" alt="Site Logo" style="width: 100px; height: auto; position: absolute; left: 20px; top: 20px;">
   <h1>Best Deals</h1>
   <p>Curated offers from trusted platforms</p>
   <button class="toggle-btn" onclick="toggleDarkMode()">Toggle Dark Mode</button>
 </header>
+
 
 <main class="container">
 
@@ -207,9 +209,25 @@
 </main>
 
 <footer>
-  Disclaimer: This site may contain affiliate links. We may earn a commission from qualifying purchases made through links to Amazon, Flipkart, and other shopping sites. <br> 
-  © 2025 ecomdeals.netlify.app | All rights reserved.
+  <div>
+    <p>
+      Disclaimer: This site may contain affiliate links. We may earn a commission from qualifying purchases made through links to Amazon, Flipkart, and other shopping sites.
+    </p>
+    <p>© 2025 ecomdeals.netlify.app | All rights reserved.</p>
+    <div class="social-media">
+      <a href="https://www.facebook.com" target="_blank" rel="nofollow noopener">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" style="width: 24px; height: 24px; margin-right: 10px;">
+      </a>
+      <a href="https://www.instagram.com" target="_blank" rel="nofollow noopener">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" style="width: 24px; height: 24px; margin-right: 10px;">
+      </a>
+      <a href="https://twitter.com" target="_blank" rel="nofollow noopener">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/60/Twitter_Logo_as_of_2021.svg" alt="Twitter" style="width: 24px; height: 24px;">
+      </a>
+    </div>
+  </div>
 </footer>
+
 
 <script>
   function toggleDarkMode() {
