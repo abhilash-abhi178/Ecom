@@ -1,212 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Best Deals - Shop Easy, Shop Smart....</title>
-  <meta name="description" content="Best handpicked deals from multiple e-commerce websites. Shop smart and save big today.">
-  <meta name="google-adsense-account" content="ca-pub-1576490438435442">
-  <link rel="icon" href="Web logo.png" type="image/png"> <!-- Logo for title bar -->
-
-  <!-- Google AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1576490438435442" crossorigin="anonymous"></script>
-
-  <!-- CSS -->
-  <style>
-    /* Reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
-    body {
-      background: #f5f5f5;
-      color: #333;
-      transition: background 0.3s, color 0.3s;
-    }
-    header {
-      background: #1e88e5;
-      color: white;
-      padding: 20px;
-      text-align: center;
-      font-size: 1.8em;
-      font-weight: bold;
-    }
-    header img {
-      height: 50px; /* Adjust according to logo size */
-    }
-    .search-bar {
-      margin: 20px auto;
-      text-align: center;
-    }
-    .search-bar input {
-      padding: 10px;
-      width: 80%;
-      max-width: 400px;
-      border: 1px solid #ccc;
-      border-radius: 25px;
-      font-size: 1em;
-    }
-    .toggle-dark {
-      margin: 20px;
-      text-align: center;
-    }
-    .toggle-dark button {
-      background: #1e88e5;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 1em;
-    }
-    .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-      padding: 20px;
-    }
-    .card {
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      padding: 15px;
-      text-align: center;
-      transition: transform 0.3s;
-    }
-    .card:hover {
-      transform: translateY(-5px);
-    }
-    .card img {
-      width: 100%;
-      height: auto;
-      border-radius: 10px;
-    }
-    .card h3 {
-      margin-top: 10px;
-      font-size: 1.2em;
-      color: #222;
-    }
-    .card a {
-      display: inline-block;
-      margin: 5px;
-      padding: 8px 16px;
-      background-color: #1e88e5;
-      color: white;
-      border-radius: 20px;
-      text-decoration: none;
-      transition: background 0.3s;
-    }
-    .card a:hover {
-      background-color: #005cb2;
-    }
-    footer {
-      margin-top: 30px;
-      padding: 20px;
-      text-align: center;
-      font-size: 0.9em;
-      color: #666;
-    }
-    footer a {
-      margin: 0 10px;
-      color: #333;
-      text-decoration: none;
-    }
-    footer a:hover {
-      color: #1e88e5;
-    }
-    /* Dark Mode */
-    body.dark {
-      background: #121212;
-      color: #e0e0e0;
-    }
-    body.dark header {
-      background: #333;
-    }
-    body.dark .card {
-      background: #1f1f1f;
-      color: #e0e0e0;
-    }
-    body.dark .card a {
-      background-color: #03dac6;
-    }
-    body.dark .card a:hover {
-      background-color: #00bfa5;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-adsense-account" content="ca-pub-1576490438435442">
+    <title>Ecom-Deals - Home</title>
+    <link rel="stylesheet" href="style.css">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1576490438435442" crossorigin="anonymous"></script>
 </head>
-
 <body>
+    <header class="navbar">
+        <div class="menu-toggle">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <div class="logo">EcomDeals</div>
+        <nav class="main-nav">
+            <a href="index.html">Home</a>
+            <a href="">Cart</a>
+            <a href="">Login</a>
+        </nav>
+    </header>
 
-  <header>
-    <img src="Web logo.png" alt="Logo">
-    Best Deals
-  </header>
+    <section class="hero">
+        <h1>Welcome to EcomDeals!</h1>
+        <p>Shop Smart,Shop Easy.....!</p>
+    </section>
 
-  <div class="search-bar">
-    <input type="text" id="search" placeholder="Search products...">
-  </div>
+    <section class="products">
+        <h2>Featured Products</h2>
+        <div class="product-grid">
+            <div class="product-card">
+                <img src="https://m.media-amazon.com/images/I/71fX8k5fCzL._SX522_.jpg" alt="Carlington Premium Men's Watch">
+                <h3>Carlington Premium Men's Watch</h3>
+                <p>Check Price</p>
+                <div>
+                    <a href="https://amzn.to/3YnItWD" target="_blank">View on Amazon</a>
+                    <a href="https://fktr.in/NLWe8A9" target="_blank">View on Flipkart</a>
+                </div>
+            </div>
 
-  <div class="toggle-dark">
-    <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
-  </div>
+            <div class="product-card">
+                <img src="https://f.media-amazon.com/images/I/81aLbywJ57L._SX522_.jpg" alt="VARS Decor Wooden Set-Top Box Stand">
+                <h3>VARS Decor Wooden Set-Top Box Stand</h3>
+                <p>Check Price</p>
+                <div>
+                    <a href="https://amzn.to/4lUuK3z" target="_blank">View on Amazon</a>
+                    <a href="https://fktr.in/ziexrPm" target="_blank">View on Flipkart</a>
+                </div>
+            </div>
+	  <div class="product-card">
+                <img src="https://rukminim2.flixcart.com/image/832/832/xif0q/face-wash/v/z/d/200-ocean-for-men-fights-acne-pimple-brighten-skin-all-skin-original-imah5gh63zgy8ph3.jpeg?q=70&crop=false" alt="MUUCHSTAC Ocean for Men, Fights Acne & Pimple, Brighten Skin, All Skin Types Face Wash  (200 ml)">
+                <h3>MUUCHSTAC Ocean for Men, Fights Acne & Pimple, Brighten Skin, All Skin Types Face Wash  (200 ml)</h3>
+                <p>Check Price</p>
+                <div>
+                    <a href="" target="_blank">View on Amazon</a>
+                    <a href="https://fktr.in/wsZ519w" target="_blank">View on Flipkart</a>
+		     <a href="https://www.meesho.com/af_invite/404353836:instagram_stories:129724?p_id=199998279&ext_id=3b2nnr&utm_source=instagram_stories" target="_blank">View on Meesho</a>
 
-  <section class="products" id="product-list">
-    <!-- Product 1 -->
-    <div class="card">
-      <img src="https://m.media-amazon.com/images/I/71fX8k5fCzL._SX522_.jpg" alt="Carlington Premium Men's Watch">
-      <h3>Carlington Premium Men's Watch</h3>
-      <div>
-        <a href="https://amzn.to/3YnItWD" target="_blank">View on Amazon</a>
-        <a href="https://www.flipkart.com/item/p/itmabc123xyz" target="_blank">View on Flipkart</a>
-      </div>
-    </div>
+                </div>
+            </div>
+ 		<div class="product-card">
+                <img src="https://rukminim2.flixcart.com/image/832/832/xif0q/ring/n/z/z/7-1-ycfjrg-314eng-sl-wf-ring-yellow-chimes-original-imafzmn8yghe9mgt.jpeg?q=70&crop=false" alt="Valentine Special Crystal Adjustable Proposal Ring with Velvet Red Rose Ring Box ">
+                <h3>Valentine Special Crystal Adjustable Proposal Ring with Velvet Red Rose Ring Box  </h3>
+                <p>Check Price</p>
+                <div>
+                    <a href="https://amzn.to/43ghQ8J" target="_blank">View on Amazon</a>
+                    <a href="https://fktr.in/lB6xpd9" target="_blank">View on Flipkart</a>
+		    <a href="https://www.meesho.com/af_invite/404353836:instagram_stories:129795?p_id=496778329&ext_id=87rom1&utm_source=instagram_stories">View on Meesho</a>
 
-    <!-- Product 2 -->
-    <div class="card">
-      <img src="https://f.media-amazon.com/images/I/81aLbywJ57L._SX522_.jpg" alt="VARS Decor Wooden Set-Top Box Stand">
-      <h3>VARS Decor Wooden Set-Top Box Stand</h3>
-      <div>
-        <a href="https://amzn.to/4lUuK3z" target="_blank">View on Amazon</a>
-        <a href="https://www.flipkart.com/item/p/itm4567defgh" target="_blank">View on Flipkart</a>
-      </div>
-    </div>
+                </div>
+            </div>
+		<div class="product-card">
+                <img src="https://f.media-amazon.com/images/I/61qkUgVtkiL._SY500_.jpg" alt="Okos Heart Shape Brass Cubic Zirconia Rhodium Plated Ring ">
+                <h3>Okos Heart Shape Brass Cubic Zirconia Rhodium Plated Ring </h3>
+                <p>Check Price</p>
+                <div>
+                    <a href="https://amzn.to/4k5mEDu" target="_blank">View on Amazon</a>
+                    <a href="https://fktr.in/44Xpoz2" target="_blank">View on Flipkart</a>
+		    
 
-    <!-- More products you can add similarly -->
-  </section>
+                </div>
+            </div>
+		<div class="product-card">
+                <img src="https://f.media-amazon.com/images/I/61aD70hwrmL._SY355_.jpg" alt="HP H150  Wireless , Digital Active Noise Cancelation, 7 Hours of Playtime">
+                <h3>HP H150  Wireless , Digital Active Noise Cancelation, 7 Hours of Playtime</h3>
+                <p>Check Price</p>
+                <div>
+                    <a href="https://amzn.to/3RQlKPf" target="_blank">View on Amazon</a>
+                    <a href="https://fktr.in/Tzmak31" target="_blank">View on Flipkart</a>
+                </div>
+            </div>
 
 
-  
 
-  <footer>
-    <p>Follow us on:</p>
-    <a href="https://www.facebook.com/yourprofile" target="_blank">Facebook</a>
-    <a href="https://www.instagram.com/yourprofile" target="_blank">Instagram</a>
-    <a href="https://twitter.com/yourprofile" target="_blank">Twitter</a>
-    <p>© 2025 Best Deals. All rights reserved.</p>
-  </footer>
 
-  <!-- JavaScript -->
-  <script>
-    function toggleDarkMode() {
-      document.body.classList.toggle('dark');
-    }
 
-    const searchInput = document.getElementById('search');
-    searchInput.addEventListener('input', function() {
-      const filter = searchInput.value.toLowerCase();
-      const cards = document.querySelectorAll('.card');
-      cards.forEach(card => {
-        const title = card.querySelector('h3').innerText.toLowerCase();
-        if (title.includes(filter)) {
-          card.style.display = '';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    });
-  </script>
+            </div>
+    </section>
 
+    <footer>
+        <p>Follow us on:</p>
+        <a href="https://www.facebook.com/yourprofile" target="_blank">Facebook</a>
+        <a href="https://www.instagram.com/ecom._.deals" target="_blank">Instagram</a>
+        <a href="https://twitter.com/yourprofile" target="_blank">Twitter</a>
+        <p>&copy; 2025 EcomDeals. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const mainNav = document.querySelector('.main-nav');
+
+            menuToggle.addEventListener('click', function() {
+                mainNav.classList.toggle('nav-open');
+                menuToggle.classList.toggle('toggle-open'); // Optional: for styling the toggle
+            });
+        });
+    </script>
 </body>
 </html>
