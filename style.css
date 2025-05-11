@@ -880,3 +880,29 @@ header.navbar nav.main-nav a:hover {
     background-color: #283593;
     transform: scale(1.02);
 }
+.logout-menu {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+}
+
+.logout-toggle.active .logout-menu {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.logout-menu {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+}
+
+.logout-toggle.active .logout-menu {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
