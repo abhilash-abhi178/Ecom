@@ -1,63 +1,117 @@
-// Header.js Script
-// Splash screen hide after 4 seconds
-window.addEventListener('DOMContentLoaded', function() {
-    setTimeout(function() {
-        document.body.classList.add('loaded');
-    }, 4000); // 4 seconds for splash screen
-});
+// Function to create the header dynamically
+function createHeader() {
+    const header = document.createElement('header');
+    header.className = 'navbar';
 
-// Footer Toggle Script
-document.addEventListener("DOMContentLoaded", function() {
-    const sections = document.querySelectorAll('.footer-section');
-    sections.forEach(section => {
-        const header = section.querySelector('h4');
-        const icon = header.querySelector('.toggle-icon');
-        const list = section.querySelector('.footer-list');
+    // Mobile menu toggle
+    const menuToggle = document.createElement('div');
+    menuToggle.className = 'menu-toggle';
+    const bar1 = document.createElement('div');
+    bar1.className = 'bar';
+    const bar2 = document.createElement('div');
+    bar2.className = 'bar';
+    const bar3 = document.createElement('div');
+    bar3.className = 'bar';
+    menuToggle.appendChild(bar1);
+    menuToggle.appendChild(bar2);
+    menuToggle.appendChild(bar3);
 
-        header.addEventListener('click', function() {
-            const isActive = section.classList.contains('active');
-            sections.forEach(sec => {
-                sec.classList.remove('active');
-                sec.querySelector('.toggle-icon').textContent = '+';
-                sec.querySelector('.footer-list').style.display = 'none';
-            });
+    // Logo
+    const logo = document.createElement('div');
+    logo.className = 'logo';
+    logo.textContent = 'EcomDeals';
 
-            if (!isActive) {
-                section.classList.add('active');
-                icon.textContent = '-';
-                list.style.display = 'block';
-            } else {
-                section.classList.remove('active');
-                icon.textContent = '+';
-                list.style.display = 'none';
-            }
-        });
-    });
-});
+    // Navigation
+    const nav = document.createElement('nav');
+    nav.className = 'main-nav';
+    const homeLink = document.createElement('a');
+    homeLink.href = '/';  // Or 'index.html' if needed
+    homeLink.textContent = 'Home';
+    const cartLink = document.createElement('a');
+    cartLink.href = '#'; // Replace with your cart page URL
+    cartLink.textContent = 'Cart';
 
-// Menu Toggle Script
-document.addEventListener('DOMContentLoaded', function() {
-    const menuToggle = document.querySelector('.menu-toggle');
-    const mainNav = document.querySelector('.main-nav');
+    // Login / Logout Link (initially login)
+    const loginLink = document.createElement('a');
+    loginLink.href = '#'; // Placeholder, it will be changed dynamically
+    loginLink.textContent = 'Login';
+    loginLink.id = 'login-link'; // ID to target the login button
 
+    const logoutLink = document.createElement('a');
+    logoutLink.href = '#'; // Placeholder, it will be changed dynamically
+    logoutLink.textContent = 'Logout';
+    logoutLink.id = 'logout-link'; // ID to target the logout button
+    logoutLink.style.display = 'none'; // Hidden by default
+
+    nav.appendChild(homeLink);
+    nav.appendChild(cartLink);
+    nav.appendChild(loginLink);
+    nav.appendChild(logoutLink);
+
+    // Mobile menu toggle functionality (moved inside the function)
     menuToggle.addEventListener('click', function() {
-        mainNav.classList.toggle('nav-open');
-        menuToggle.classList.toggle('toggle-open'); // Optional: for styling the toggle
+        nav.classList.toggle('nav-open');
+        menuToggle.classList.toggle('toggle-open');
     });
-});
 
-// Update User UI with profile image and name
+    // Handle login/logout functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const storedUser = JSON.parse(localStorage.getItem('amazonUser'));
+        if (storedUser) {
+            updateUserUI(storedUser.name, storedUser.picture);
+        }
+    });
+
+    loginLink.onclick = function(e) {
+        e.preventDefault();
+        const options = { scope: 'profile' };
+        amazon.Login.authorize(options, function(response) {
+            if (response.error) {
+                alert('Amazon login failed: ' + response.error);
+                return;
+            }
+
+            fetch('https://api.amazon.com/user/profile', {
+                headers: {
+                    'Authorization': 'Bearer ' + response.access_token
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                const name = data.name || 'User';
+                const picture = data.profile_picture || 'https://via.placeholder.com/30'; // fallback to placeholder
+                updateUserUI(name, picture);
+                localStorage.setItem('amazonUser', JSON.stringify({ name, picture }));
+            })
+            .catch(err => {
+                console.error('Failed to fetch Amazon profile', err);
+            });
+        });
+    };
+
+    logoutLink.onclick = function(e) {
+        e.preventDefault();
+        logout();
+    };
+
+    return header;
+}
+
+// Function to update the header UI after login
 function updateUserUI(name, picture) {
+    document.getElementById('login-link').style.display = 'none'; // Hide login link
+    document.getElementById('logout-link').style.display = 'inline-block'; // Show logout link
+
+    document.getElementById('logout-link').style.pointerEvents = 'auto'; // Enable logout button
+
+    // Optionally update the header with profile info
     document.getElementById('login-link').innerHTML = `
         <img src="${picture}" alt="Profile" style="width:30px;height:30px;border-radius:50%;vertical-align:middle;margin-right:8px;">
         Hi, ${name.split(' ')[0]}
     `;
-    document.getElementById('logout-link').style.display = 'inline-block'; // Show logout button
-    document.getElementById('login-link').style.display = 'none'; // Hide login button
-    document.getElementById('logout-link').style.pointerEvents = 'auto'; // Enable logout button
 }
 
-// Logout function
+// Function to handle logout
 function logout() {
     localStorage.removeItem('amazonUser'); // Clear user data from localStorage
     document.getElementById('login-link').style.display = 'inline-block'; // Show login button again
@@ -65,12 +119,10 @@ function logout() {
     document.getElementById('login-link').style.pointerEvents = 'auto'; // Enable login button
 }
 
-// On page load, check if user already logged in
-document.addEventListener('DOMContentLoaded', function() {
-    const storedUser = JSON.parse(localStorage.getItem('amazonUser'));
-    if (storedUser) {
-        updateUserUI(storedUser.name, storedUser.picture);
-    }
+// Append the header to the body after DOM content is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    const headerElement = createHeader();
+    document.body.insertBefore(headerElement, document.body.firstChild);
 });
 
 // Amazon Login setup
@@ -84,40 +136,3 @@ window.onAmazonLoginReady = function() {
     a.src = 'https://assets.loginwithamazon.com/sdk/na/login1.js';
     d.getElementById('amazon-root').appendChild(a);
 })(document);
-
-// Handle login button click
-document.getElementById('login-link').onclick = function(e) {
-    e.preventDefault();
-    var options = { scope: 'profile' };
-    amazon.Login.authorize(options, function(response) {
-        if (response.error) {
-            alert('Amazon login failed: ' + response.error);
-            return;
-        }
-        // Fetch user profile
-        fetch('https://api.amazon.com/user/profile', {
-            headers: {
-                'Authorization': 'Bearer ' + response.access_token
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-            const name = data.name || 'User';
-            const picture = data.profile_picture || 'https://via.placeholder.com/30'; // fallback to placeholder
-            updateUserUI(name, picture);
-
-            // Save user data to localStorage
-            localStorage.setItem('amazonUser', JSON.stringify({ name, picture }));
-        })
-        .catch(err => {
-            console.error('Failed to fetch Amazon profile', err);
-        });
-    });
-    return false;
-};
-
-// Handle logout click event
-document.getElementById('logout-link').onclick = function(e) {
-    e.preventDefault();
-    logout();
-};
