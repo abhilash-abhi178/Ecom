@@ -6,14 +6,14 @@
     <title>Ecom-Deals - Home</title>
     <link rel="icon" type="image/x-icon" href="logo.png">
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
-    <script src="footer.js"></script>
-    <script src="header.js"></script>
+    
+    <!-- Scripts -->
+    <script src="script.js" defer></script>
+    <script src="footer.js" defer></script>
+    <script src="header.js" defer></script> <!-- IMPORTANT: defer -->
     
     <!-- Google Adsense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1576490438435442" crossorigin="anonymous"></script>
-
-   
 </head>
 
 <body>
@@ -24,20 +24,8 @@
         </div>
     </div>
 
-    <header class="navbar">
-        <div class="menu-toggle">
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
-        </div>
-        <div class="logo">EcomDeals</div>
-        <nav class="main-nav">
-            <a href="/">Home</a>
-            <a href="#">Cart</a>
-            <a href="#" id="login-link">Login</a>
-        </nav>
-    </header>
-
+    <!-- Dynamic Header will be inserted here by header.js -->
+    
     <section class="hero">
         <h1>Welcome to EcomDeals!</h1>
         <p>Shop Smart, Shop Easy.....!</p>
@@ -66,8 +54,6 @@
             </div>
         </div>
     </section>
-
-
 
 </body>
 </html>
