@@ -1,57 +1,52 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const storedUser = JSON.parse(localStorage.getItem('user'));
-
-    // Create header element
+function createHeader() {
     const header = document.createElement('header');
     header.className = 'navbar';
 
-    // Left part of the navbar (logo and menu toggle)
-    const left = document.createElement('div');
-    left.className = 'navbar-left';
-
     const menuToggle = document.createElement('div');
     menuToggle.className = 'menu-toggle';
-    for (let i = 0; i < 3; i++) {
-        const bar = document.createElement('div');
-        bar.className = 'bar';
-        menuToggle.appendChild(bar);
-    }
+    const bar1 = document.createElement('div');
+    bar1.className = 'bar';
+    const bar2 = document.createElement('div');
+    bar2.className = 'bar';
+    const bar3 = document.createElement('div');
+    bar3.className = 'bar';
+    menuToggle.appendChild(bar1);
+    menuToggle.appendChild(bar2);
+    menuToggle.appendChild(bar3);
 
     const logo = document.createElement('div');
     logo.className = 'logo';
     logo.textContent = 'EcomDeals';
 
-    left.appendChild(menuToggle);
-    left.appendChild(logo);
-
-    // Right part of the navbar (login or user name)
-    const right = document.createElement('div');
-    right.className = 'navbar-right';
-
+    const nav = document.createElement('nav');
+    nav.className = 'main-nav';
+    const homeLink = document.createElement('a');
+    homeLink.href = '/';  // Or 'index.html' if needed
+    homeLink.textContent = 'Home';
+    const cartLink = document.createElement('a');
+    cartLink.href = '#'; //  Replace with your cart page URL
+    cartLink.textContent = 'Cart';
     const loginLink = document.createElement('a');
-    loginLink.href = 'login.html';
-    loginLink.id = 'login-link';
+    loginLink.href = '#'; // Replace with your login page URL
+    loginLink.textContent = 'Login';
+    nav.appendChild(homeLink);
+    nav.appendChild(cartLink);
+    nav.appendChild(loginLink);
 
-    // Check if user is logged in and display appropriate text
-    if (storedUser && storedUser.name) {
-        loginLink.textContent = `Hi, ${storedUser.name.split(' ')[0]}`;  // Only show the first name
-    } else {
-        loginLink.textContent = 'Login';
-    }
+    header.appendChild(menuToggle);
+    header.appendChild(logo);
+    header.appendChild(nav);
 
-    right.appendChild(loginLink);
-
-    // Append left and right sections to the header
-    header.appendChild(left);
-    header.appendChild(right);
-
-    // Insert header into the DOM
-    document.body.insertBefore(header, document.body.firstChild);
-
-    // Mobile menu toggle functionality
-    menuToggle.addEventListener('click', () => {
-        const nav = document.querySelector('.main-nav');
+    // Mobile menu toggle functionality (moved inside the function)
+    menuToggle.addEventListener('click', function() {
         nav.classList.toggle('nav-open');
         menuToggle.classList.toggle('toggle-open');
     });
+
+    return header;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const headerElement = createHeader();
+    document.body.insertBefore(headerElement, document.body.firstChild);
 });
