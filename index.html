@@ -59,7 +59,7 @@
         <nav class="main-nav">
             <a href="/">Home</a>
             <a href="#">Cart</a>
-            <a href="login.html" id="login-link">Login</a>
+            <a href="#" id="login-link">Login</a>
         </nav>
     </header>
 
@@ -98,8 +98,10 @@
     <!-- Amazon Login Script -->
     <script type="text/javascript">
         function updateUserUI(name, picture) {
+            // If the picture is missing, fallback to the first letter of the name
+            const profilePic = picture || `https://via.placeholder.com/30/000000/FFFFFF/?text=${name.charAt(0).toUpperCase()}`;
             document.getElementById('login-link').innerHTML = `
-                <img src="${picture}" alt="Profile" style="width:30px;height:30px;border-radius:50%;vertical-align:middle;margin-right:8px;">
+                <img src="${profilePic}" alt="Profile" style="width:30px;height:30px;border-radius:50%;vertical-align:middle;margin-right:8px;">
                 Hi, ${name.split(' ')[0]}
             `;
             document.getElementById('login-link').style.pointerEvents = 'none';
@@ -142,7 +144,7 @@
                 .then(data => {
                     console.log('Amazon Profile:', data);
                     const name = data.name || 'User';
-                    const picture = data.profile_picture || 'https://via.placeholder.com/30';
+                    const picture = data.profile_picture || ''; // If no profile picture, fallback will occur
                     updateUserUI(name, picture);
                     localStorage.setItem('amazonUser', JSON.stringify({ name, picture }));
                 })
