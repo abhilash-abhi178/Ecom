@@ -1,18 +1,14 @@
-function createHeader() {
+function createHeader(user) {
     const header = document.createElement('header');
     header.className = 'navbar';
 
     const menuToggle = document.createElement('div');
     menuToggle.className = 'menu-toggle';
-    const bar1 = document.createElement('div');
-    bar1.className = 'bar';
-    const bar2 = document.createElement('div');
-    bar2.className = 'bar';
-    const bar3 = document.createElement('div');
-    bar3.className = 'bar';
-    menuToggle.appendChild(bar1);
-    menuToggle.appendChild(bar2);
-    menuToggle.appendChild(bar3);
+    for (let i = 0; i < 3; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'bar';
+        menuToggle.appendChild(bar);
+    }
 
     const logo = document.createElement('div');
     logo.className = 'logo';
@@ -20,24 +16,48 @@ function createHeader() {
 
     const nav = document.createElement('nav');
     nav.className = 'main-nav';
+
     const homeLink = document.createElement('a');
-    homeLink.href = '/';  // Or 'index.html' if needed
+    homeLink.href = '/';
     homeLink.textContent = 'Home';
+
     const cartLink = document.createElement('a');
-    cartLink.href = '#'; //  Replace with your cart page URL
+    cartLink.href = '#'; 
     cartLink.textContent = 'Cart';
-    const loginLink = document.createElement('a');
-    loginLink.href = '#'; // Replace with your login page URL
-    loginLink.textContent = 'Login';
+
     nav.appendChild(homeLink);
     nav.appendChild(cartLink);
-    nav.appendChild(loginLink);
+
+    // If user is logged in, show name and logout
+    if (user) {
+        const userName = document.createElement('span');
+        userName.className = 'user-name';
+        userName.textContent = `Hello, ${user.name}`;
+
+        const logoutButton = document.createElement('button');
+        logoutButton.className = 'logout-button';
+        logoutButton.textContent = 'Logout';
+        logoutButton.addEventListener('click', () => {
+            // Logout logic (clear tokens, etc.)
+            localStorage.removeItem('user'); // Example: remove from storage
+            window.location.reload(); // Reload page after logout
+        });
+
+        nav.appendChild(userName);
+        nav.appendChild(logoutButton);
+    } else {
+        // If no user, show Login button
+        const loginLink = document.createElement('a');
+        loginLink.href = 'login.html'; 
+        loginLink.textContent = 'Login';
+        nav.appendChild(loginLink);
+    }
 
     header.appendChild(menuToggle);
     header.appendChild(logo);
     header.appendChild(nav);
 
-    // Mobile menu toggle functionality (moved inside the function)
+    // Mobile menu toggle
     menuToggle.addEventListener('click', function() {
         nav.classList.toggle('nav-open');
         menuToggle.classList.toggle('toggle-open');
@@ -47,6 +67,9 @@ function createHeader() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const headerElement = createHeader();
+    // Assume user info is stored in localStorage after login
+    const storedUser = JSON.parse(localStorage.getItem('user')); // { name: 'John' }
+
+    const headerElement = createHeader(storedUser);
     document.body.insertBefore(headerElement, document.body.firstChild);
 });
