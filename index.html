@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,8 +6,8 @@
     <title>Ecom-Deals - Home</title>
     <link rel="icon" type="image/x-icon" href="logo.png">
     <link rel="stylesheet" href="style.css">
-     <script src="script.js"></script>
-	<script src="footer.js"></script>
+    <script src="script.js"></script>
+    <script src="footer.js"></script>
     
     <!-- Google Adsense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1576490438435442" crossorigin="anonymous"></script>
@@ -38,58 +38,6 @@
             visibility: hidden;
             transition: opacity 0.7s ease-out, visibility 0s linear 0.7s;
         }
-
-        /* Footer Styles */
-        .footer-container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        .footer-section {
-            background-color: #2d2d2d;
-            padding: 15px;
-            border-radius: 8px;
-        }
-        .footer-section h4 {
-            cursor: pointer;
-            font-size: 18px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-        }
-        .toggle-icon {
-            margin-right: 8px;
-            font-size: 20px;
-        }
-        .footer-list {
-            list-style: none;
-            padding-left: 0;
-            display: none;
-            margin-top: 10px;
-        }
-        .footer-list li {
-            margin: 8px 0;
-        }
-        .footer-list li a {
-            color: #ccc;
-            text-decoration: none;
-        }
-        .footer-list li a:hover {
-            text-decoration: underline;
-        }
-        /* Expand automatically on desktop */
-        @media (min-width: 768px) {
-            .footer-container {
-                flex-direction: row;
-                justify-content: space-between;
-            }
-            .footer-list {
-                display: block !important;
-            }
-            .toggle-icon {
-                display: none;
-            }
-        }
     </style>
 </head>
 
@@ -101,32 +49,28 @@
         </div>
     </div>
 
-  <header class="navbar">
-    <div class="menu-toggle">
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-    </div>
-    <div class="logo">EcomDeals</div>
-    <nav class="main-nav">
-        <a href="/">Home</a>
-        <a href="#">Cart</a>
-        <a href="#">Login</a>
-    </nav>
-</header>
+    <header class="navbar">
+        <div class="menu-toggle">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <div class="logo">EcomDeals</div>
+        <nav class="main-nav">
+            <a href="/">Home</a>
+            <a href="#">Cart</a>
+            <a href="login.html" id="login-link">Login</a>
+        </nav>
+    </header>
 
-
-    <!-- Hero Section -->
     <section class="hero">
         <h1>Welcome to EcomDeals!</h1>
         <p>Shop Smart, Shop Easy.....!</p>
     </section>
 
-    <!-- Products Section -->
     <section class="products">
         <h2>Featured Products</h2>
         <div class="product-grid">
-            <!-- Product 1 -->
             <div class="product-card">
                 <img src="https://m.media-amazon.com/images/I/71fX8k5fCzL._SX522_.jpg" alt="Carlington Premium Men's Watch">
                 <h3>Carlington Premium Men's Watch</h3>
@@ -136,7 +80,6 @@
                     <a href="https://fktr.in/NLWe8A9" target="_blank">View on Flipkart</a>
                 </div>
             </div>
-            <!-- Product 2 -->
             <div class="product-card">
                 <img src="https://f.media-amazon.com/images/I/81aLbywJ57L._SX522_.jpg" alt="VARS Decor Wooden Set-Top Box Stand">
                 <h3>VARS Decor Wooden Set-Top Box Stand</h3>
@@ -146,11 +89,70 @@
                     <a href="https://fktr.in/ziexrPm" target="_blank">View on Flipkart</a>
                 </div>
             </div>
-            <!-- More products... -->
         </div>
     </section>
 
+    <!-- Amazon Login Button -->
+    <div id="amazon-root"></div>
 
-    
+    <!-- Amazon Login Script -->
+    <script type="text/javascript">
+        function updateUserUI(name, picture) {
+            document.getElementById('login-link').innerHTML = `
+                <img src="${picture}" alt="Profile" style="width:30px;height:30px;border-radius:50%;vertical-align:middle;margin-right:8px;">
+                Hi, ${name.split(' ')[0]}
+            `;
+            document.getElementById('login-link').style.pointerEvents = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const storedUser = JSON.parse(localStorage.getItem('amazonUser'));
+            if (storedUser) {
+                updateUserUI(storedUser.name, storedUser.picture);
+            }
+        });
+
+        window.onAmazonLoginReady = function() {
+            amazon.Login.setClientId('amzn1.application-oa2-client.b4f87693d14b4c82a628824194ba48de');
+        };
+
+        (function(d) {
+            var a = d.createElement('script'); 
+            a.type = 'text/javascript';
+            a.async = true; 
+            a.id = 'amazon-login-sdk';
+            a.src = 'https://assets.loginwithamazon.com/sdk/na/login1.js';
+            d.getElementById('amazon-root').appendChild(a);
+        })(document);
+
+        document.getElementById('login-link').onclick = function(e) {
+            e.preventDefault();
+            var options = { scope: 'profile' };
+            amazon.Login.authorize(options, function(response) {
+                if (response.error) {
+                    alert('Amazon login failed: ' + response.error);
+                    return;
+                }
+                fetch('https://api.amazon.com/user/profile', {
+                    headers: {
+                        'Authorization': 'Bearer ' + response.access_token
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    console.log('Amazon Profile:', data);
+                    const name = data.name || 'User';
+                    const picture = data.profile_picture || 'https://via.placeholder.com/30';
+                    updateUserUI(name, picture);
+                    localStorage.setItem('amazonUser', JSON.stringify({ name, picture }));
+                })
+                .catch(err => {
+                    console.error('Failed to fetch Amazon profile', err);
+                });
+            });
+            return false;
+        };
+    </script>
+
 </body>
 </html>
