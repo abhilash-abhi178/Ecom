@@ -1,0 +1,156 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecom-Deals - Home</title>
+    <link rel="icon" type="image/x-icon" href="logo.png">
+    <link rel="stylesheet" href="style.css">
+     <script src="script.js"></script>
+	<script src="footer.js"></script>
+    
+    <!-- Google Adsense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1576490438435442" crossorigin="anonymous"></script>
+
+    <style>
+        /* Splash Screen Styles */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.7s ease-out;
+        }
+        #splash-logo img {
+            width: 150px;
+            height: auto;
+        }
+        .loaded #splash-screen {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.7s ease-out, visibility 0s linear 0.7s;
+        }
+
+        /* Footer Styles */
+        .footer-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .footer-section {
+            background-color: #2d2d2d;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .footer-section h4 {
+            cursor: pointer;
+            font-size: 18px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .toggle-icon {
+            margin-right: 8px;
+            font-size: 20px;
+        }
+        .footer-list {
+            list-style: none;
+            padding-left: 0;
+            display: none;
+            margin-top: 10px;
+        }
+        .footer-list li {
+            margin: 8px 0;
+        }
+        .footer-list li a {
+            color: #ccc;
+            text-decoration: none;
+        }
+        .footer-list li a:hover {
+            text-decoration: underline;
+        }
+        /* Expand automatically on desktop */
+        @media (min-width: 768px) {
+            .footer-container {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            .footer-list {
+                display: block !important;
+            }
+            .toggle-icon {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Splash Screen -->
+    <div id="splash-screen">
+        <div id="splash-logo">
+            <img src="logo.gif" alt="Loading...">
+        </div>
+    </div>
+
+  <header class="navbar">
+    <div class="menu-toggle">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+    <div class="logo">EcomDeals</div>
+    <nav class="main-nav">
+        <a href="/">Home</a>
+        <a href="#">Cart</a>
+        <a href="#">Login</a>
+    </nav>
+</header>
+
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Welcome to EcomDeals!</h1>
+        <p>Shop Smart, Shop Easy.....!</p>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products">
+        <h2>Featured Products</h2>
+        <div class="product-grid">
+            <!-- Product 1 -->
+            <div class="product-card">
+                <img src="https://m.media-amazon.com/images/I/71fX8k5fCzL._SX522_.jpg" alt="Carlington Premium Men's Watch">
+                <h3>Carlington Premium Men's Watch</h3>
+                <p>Check Price</p>
+                <div>
+                    <a href="https://amzn.to/3YnItWD" target="_blank">View on Amazon</a>
+                    <a href="https://fktr.in/NLWe8A9" target="_blank">View on Flipkart</a>
+                </div>
+            </div>
+            <!-- Product 2 -->
+            <div class="product-card">
+                <img src="https://f.media-amazon.com/images/I/81aLbywJ57L._SX522_.jpg" alt="VARS Decor Wooden Set-Top Box Stand">
+                <h3>VARS Decor Wooden Set-Top Box Stand</h3>
+                <p>Check Price</p>
+                <div>
+                    <a href="https://amzn.to/4lUuK3z" target="_blank">View on Amazon</a>
+                    <a href="https://fktr.in/ziexrPm" target="_blank">View on Flipkart</a>
+                </div>
+            </div>
+            <!-- More products... -->
+        </div>
+    </section>
+
+
+    
+</body>
+</html>
