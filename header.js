@@ -1,55 +1,78 @@
-﻿function createHeader() {
-    const header = document.createElement('header');
-    header.className = 'navbar';
+// Header.js Script
+// Splash screen hide after 4 seconds
+window.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+        document.body.classList.add('loaded');
+    }, 4000); // 4 seconds for splash screen
+});
 
-    const menuToggle = document.createElement('div');
-    menuToggle.className = 'menu-toggle';
-    const bar1 = document.createElement('div');
-    bar1.className = 'bar';
-    const bar2 = document.createElement('div');
-    bar2.className = 'bar';
-    const bar3 = document.createElement('div');
-    bar3.className = 'bar';
-    menuToggle.appendChild(bar1);
-    menuToggle.appendChild(bar2);
-    menuToggle.appendChild(bar3);
+// Footer Toggle Script
+document.addEventListener("DOMContentLoaded", function() {
+    const sections = document.querySelectorAll('.footer-section');
+    sections.forEach(section => {
+        const header = section.querySelector('h4');
+        const icon = header.querySelector('.toggle-icon');
+        const list = section.querySelector('.footer-list');
 
-    const logo = document.createElement('div');
-    logo.className = 'logo';
-    logo.textContent = 'EcomDeals';
+        header.addEventListener('click', function() {
+            const isActive = section.classList.contains('active');
+            sections.forEach(sec => {
+                sec.classList.remove('active');
+                sec.querySelector('.toggle-icon').textContent = '+';
+                sec.querySelector('.footer-list').style.display = 'none';
+            });
 
-    const nav = document.createElement('nav');
-    nav.className = 'main-nav';
-    const homeLink = document.createElement('a');
-    homeLink.href = '/';  // Or 'index.html' if needed
-    homeLink.textContent = 'Home';
-    const cartLink = document.createElement('a');
-    cartLink.href = '#'; //  Replace with your cart page URL
-    cartLink.textContent = 'Cart';
-    const loginLink = document.createElement('a');
-    loginLink.href = '#'; // Replace with your login page URL
-    loginLink.textContent = 'Login';
-    nav.appendChild(homeLink);
-    nav.appendChild(cartLink);
-    nav.appendChild(loginLink);
-
-    header.appendChild(menuToggle);
-    header.appendChild(logo);
-    header.appendChild(nav);
-
-    // Mobile menu toggle functionality (moved inside the function)
-    menuToggle.addEventListener('click', function() {
-        nav.classList.toggle('nav-open');
-        menuToggle.classList.toggle('toggle-open');
+            if (!isActive) {
+                section.classList.add('active');
+                icon.textContent = '-';
+                list.style.display = 'block';
+            } else {
+                section.classList.remove('active');
+                icon.textContent = '+';
+                list.style.display = 'none';
+            }
+        });
     });
+});
 
-    return header;
+// Menu Toggle Script
+document.addEventListener('DOMContentLoaded', function() {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    menuToggle.addEventListener('click', function() {
+        mainNav.classList.toggle('nav-open');
+        menuToggle.classList.toggle('toggle-open'); // Optional: for styling the toggle
+    });
+});
+
+// Update User UI with profile image and name
+function updateUserUI(name, picture) {
+    document.getElementById('login-link').innerHTML = `
+        <img src="${picture}" alt="Profile" style="width:30px;height:30px;border-radius:50%;vertical-align:middle;margin-right:8px;">
+        Hi, ${name.split(' ')[0]}
+    `;
+    document.getElementById('logout-link').style.display = 'inline-block'; // Show logout button
+    document.getElementById('login-link').style.display = 'none'; // Hide login button
+    document.getElementById('logout-link').style.pointerEvents = 'auto'; // Enable logout button
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const headerElement = createHeader();
-    document.body.insertBefore(headerElement, document.body.firstChild);
+// Logout function
+function logout() {
+    localStorage.removeItem('amazonUser'); // Clear user data from localStorage
+    document.getElementById('login-link').style.display = 'inline-block'; // Show login button again
+    document.getElementById('logout-link').style.display = 'none'; // Hide logout button
+    document.getElementById('login-link').style.pointerEvents = 'auto'; // Enable login button
+}
+
+// On page load, check if user already logged in
+document.addEventListener('DOMContentLoaded', function() {
+    const storedUser = JSON.parse(localStorage.getItem('amazonUser'));
+    if (storedUser) {
+        updateUserUI(storedUser.name, storedUser.picture);
+    }
 });
+
 // Amazon Login setup
 window.onAmazonLoginReady = function() {
     amazon.Login.setClientId('amzn1.application-oa2-client.b4f87693d14b4c82a628824194ba48de'); // Your real Client ID
@@ -91,4 +114,10 @@ document.getElementById('login-link').onclick = function(e) {
         });
     });
     return false;
+};
+
+// Handle logout click event
+document.getElementById('logout-link').onclick = function(e) {
+    e.preventDefault();
+    logout();
 };
