@@ -14,3 +14,27 @@ document.getElementById('login-form').addEventListener('submit', (e) => {
         alert('Invalid credentials!');
     }
 });
+// If access_token is in URL, fetch profile
+const urlParams = new URLSearchParams(window.location.search);
+const accessToken = urlParams.get('access_token');
+
+if (accessToken) {
+    fetch('https://api.amazon.com/user/profile', {
+        headers: {
+            Authorization: 'Bearer ' + accessToken
+        }
+    })
+    .then(res => res.json())
+    .then(profile => {
+        console.log('Amazon profile:', profile);
+        const user = {
+            name: profile.name // You can get email too if needed
+        };
+        localStorage.setItem('user', JSON.stringify(user));
+        window.location.href = window.location.pathname; // Reload clean URL (remove access_token)
+    })
+    .catch(err => {
+        console.error('Error fetching profile:', err);
+    });
+}
+
