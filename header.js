@@ -38,9 +38,8 @@ function createHeader(user) {
         logoutButton.className = 'logout-button';
         logoutButton.textContent = 'Logout';
         logoutButton.addEventListener('click', () => {
-            // Logout logic (clear tokens, etc.)
-            localStorage.removeItem('user'); // Example: remove from storage
-            window.location.reload(); // Reload page after logout
+            localStorage.removeItem('user');
+            window.location.reload(); // Reload to update header
         });
 
         nav.appendChild(userName);
@@ -50,6 +49,14 @@ function createHeader(user) {
         const loginLink = document.createElement('a');
         loginLink.href = 'login.html'; 
         loginLink.textContent = 'Login';
+        
+        // SAVE redirect URL before going to login page
+        loginLink.addEventListener('click', (e) => {
+            e.preventDefault(); // Stop default <a> click
+            localStorage.setItem('redirectAfterLogin', window.location.href); // Save current page
+            window.location.href = 'login.html'; // Redirect manually
+        });
+
         nav.appendChild(loginLink);
     }
 
@@ -67,9 +74,17 @@ function createHeader(user) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Assume user info is stored in localStorage after login
     const storedUser = JSON.parse(localStorage.getItem('user')); // { name: 'John' }
-
     const headerElement = createHeader(storedUser);
     document.body.insertBefore(headerElement, document.body.firstChild);
+
+    // --- Handle post-login redirect if needed ---
+    if (window.location.pathname.endsWith('login.html')) {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user) {
+            const redirectUrl = localStorage.getItem('redirectAfterLogin') || '/';
+            localStorage.removeItem('redirectAfterLogin');
+            window.location.href = redirectUrl;
+        }
+    }
 });
