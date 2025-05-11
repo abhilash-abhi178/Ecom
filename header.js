@@ -88,3 +88,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+
+    document.getElementById('LoginWithAmazon').onclick = function() {
+        var options = { 
+            scope: 'profile' 
+        };
+
+        // Save the page user was on
+        localStorage.setItem('redirectAfterLogin', window.location.href);
+
+        amazon.Login.authorize(options, function(response) {
+            if (response.error) {
+                alert('OAuth error: ' + response.error);
+                return;
+            }
+            console.log('Amazon Access Token:', response.access_token);
+            
+            // Redirect to a lightweight processing page (optional) or directly reload
+            window.location.href = "amazon-auth-success.html?access_token=" + response.access_token;
+        });
+
+        return false;
+    };
+
+
