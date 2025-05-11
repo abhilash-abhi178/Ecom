@@ -1,4 +1,37 @@
+document.addEventListener('DOMContentLoaded', () => {
+    // Get the splash screen and main content elements
+    const splashScreen = document.getElementById('splash-screen');
+    const mainContent = document.getElementById('main-content');
+
+    // Set a delay to remove splash screen
+    setTimeout(() => {
+        // Add a fade-out effect
+        splashScreen.classList.add('fade-out');
+
+        // After fade-out completes, show main content and remove splash screen
+        setTimeout(() => {
+            splashScreen.style.display = 'none';
+            mainContent.style.display = 'block'; // Show the main content
+        }, 1000); // Matches the duration of the fade-out
+    }, 3000); // Splash screen stays for 3 seconds
+});
+
+// Get references to the menu toggle and navigation links
+const menuToggle = document.getElementById('menu-toggle');
+const navLinks = document.getElementById('nav-links');
+
+// Add event listener for the menu toggle button
+menuToggle.addEventListener('click', () => {
+    // Toggle the 'open' class on the navigation menu
+    navLinks.classList.toggle('open');
+
+    // Toggle the appearance of the menu toggle bars (change to X shape on open)
+    menuToggle.classList.toggle('open');
+});
+
 function createHeader(user) {
+    
+    
     const header = document.createElement('header');
     header.className = 'navbar';
 
