@@ -9,12 +9,21 @@ document.getElementById('login-form').addEventListener('submit', (e) => {
     const user = users.find(u => u.username === username && u.password === password);
     if (user) {
         alert('Login Successful!');
-        window.location.href = 'index.html';
+        
+        // Save fake user in localStorage (for consistent handling)
+        const userData = { name: username };
+        localStorage.setItem('user', JSON.stringify(userData));
+
+        // Redirect back to where login was initiated
+        const redirectUrl = localStorage.getItem('redirectAfterLogin') || '/';
+        localStorage.removeItem('redirectAfterLogin');
+        window.location.href = redirectUrl;
     } else {
         alert('Invalid credentials!');
     }
 });
-// If access_token is in URL, fetch profile
+
+// Handle Amazon login if access_token is present
 const urlParams = new URLSearchParams(window.location.search);
 const accessToken = urlParams.get('access_token');
 
@@ -27,14 +36,22 @@ if (accessToken) {
     .then(res => res.json())
     .then(profile => {
         console.log('Amazon profile:', profile);
+        
         const user = {
-            name: profile.name // You can get email too if needed
+            name: profile.name || profile.email || 'Amazon User'
         };
         localStorage.setItem('user', JSON.stringify(user));
-        window.location.href = window.location.pathname; // Reload clean URL (remove access_token)
+
+        // Clean URL (remove access_token without reloading page)
+        window.history.replaceState({}, document.title, window.location.pathname);
+
+        // Redirect back to original page
+        const redirectUrl = localStorage.getItem('redirectAfterLogin') || '/';
+        localStorage.removeItem('redirectAfterLogin');
+        window.location.href = redirectUrl;
     })
     .catch(err => {
         console.error('Error fetching profile:', err);
+        alert('Failed to fetch Amazon profile!');
     });
 }
-
