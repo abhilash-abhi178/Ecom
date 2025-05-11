@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     right.className = 'navbar-right';
 
     const loginLink = document.createElement('a');
-    loginLink.href = '#';
+    loginLink.href = 'login.html';
     loginLink.id = 'login-link';
 
     // Check if user is logged in and display appropriate text
