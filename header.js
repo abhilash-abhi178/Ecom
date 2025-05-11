@@ -24,7 +24,7 @@ function createHeader() {
     homeLink.href = '/';  // Or 'index.html' if needed
     homeLink.textContent = 'Home';
     const cartLink = document.createElement('a');
-    cartLink.href = 'checkout.html'; //  Replace with your cart page URL
+    cartLink.href = 'checout.html'; //  Replace with your cart page URL
     cartLink.textContent = 'Cart';
     const loginLink = document.createElement('a');
     loginLink.href = 'login.html'; // Replace with your login page URL
