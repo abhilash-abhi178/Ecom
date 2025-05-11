@@ -2,10 +2,6 @@ function createHeader(user) {
     const header = document.createElement('header');
     header.className = 'navbar';
 
-    // Left section (logo and menu toggle)
-    const left = document.createElement('div');
-    left.className = 'navbar-left';
-
     const menuToggle = document.createElement('div');
     menuToggle.className = 'menu-toggle';
     for (let i = 0; i < 3; i++) {
@@ -17,13 +13,6 @@ function createHeader(user) {
     const logo = document.createElement('div');
     logo.className = 'logo';
     logo.textContent = 'EcomDeals';
-
-    left.appendChild(menuToggle);
-    left.appendChild(logo);
-
-    // Right section (navigation links and user info)
-    const right = document.createElement('div');
-    right.className = 'navbar-right';
 
     const nav = document.createElement('nav');
     nav.className = 'main-nav';
@@ -71,13 +60,11 @@ function createHeader(user) {
         nav.appendChild(loginLink);
     }
 
-    right.appendChild(nav);
+    header.appendChild(menuToggle);
+    header.appendChild(logo);
+    header.appendChild(nav);
 
-    // Add left and right sections to the header
-    header.appendChild(left);
-    header.appendChild(right);
-
-    // Mobile menu toggle functionality
+    // Mobile menu toggle
     menuToggle.addEventListener('click', function() {
         nav.classList.toggle('nav-open');
         menuToggle.classList.toggle('toggle-open');
