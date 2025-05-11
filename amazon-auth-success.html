@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Authenticating...</title>
+</head>
+<body>
+    <script type="text/javascript">
+        (function() {
+            function getQueryParam(param) {
+                const urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get(param);
+            }
+
+            const accessToken = getQueryParam('access_token');
+
+            if (!accessToken) {
+                alert('No access token found!');
+                window.location.href = '/';
+            }
+
+            // Fetch Amazon profile
+            fetch('https://api.amazon.com/user/profile', {
+                headers: {
+                    Authorization: 'Bearer ' + accessToken
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Amazon profile:', data);
+
+                const user = {
+                    name: data.name || data.email || 'Amazon User'
+                };
+
+                localStorage.setItem('user', JSON.stringify(user));
+
+                const redirectUrl = localStorage.getItem('redirectAfterLogin') || '/';
+                localStorage.removeItem('redirectAfterLogin');
+                window.location.href = redirectUrl;
+            })
+            .catch(err => {
+                console.error('Profile fetch error:', err);
+                alert('Failed to fetch profile.');
+                window.location.href = '/';
+            });
+        })();
+    </script>
+</body>
+</html>
