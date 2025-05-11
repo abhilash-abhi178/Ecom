@@ -50,3 +50,45 @@ document.addEventListener('DOMContentLoaded', () => {
     const headerElement = createHeader();
     document.body.insertBefore(headerElement, document.body.firstChild);
 });
+// Amazon Login setup
+window.onAmazonLoginReady = function() {
+    amazon.Login.setClientId('amzn1.application-oa2-client.b4f87693d14b4c82a628824194ba48de'); // Your real Client ID
+};
+
+(function(d) {
+    var a = d.createElement('script'); a.type = 'text/javascript';
+    a.async = true; a.id = 'amazon-login-sdk';
+    a.src = 'https://assets.loginwithamazon.com/sdk/na/login1.js';
+    d.getElementById('amazon-root').appendChild(a);
+})(document);
+
+// Handle login button click
+document.getElementById('login-link').onclick = function(e) {
+    e.preventDefault();
+    var options = { scope: 'profile' };
+    amazon.Login.authorize(options, function(response) {
+        if (response.error) {
+            alert('Amazon login failed: ' + response.error);
+            return;
+        }
+        // Fetch user profile
+        fetch('https://api.amazon.com/user/profile', {
+            headers: {
+                'Authorization': 'Bearer ' + response.access_token
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            const name = data.name || 'User';
+            const picture = data.profile_picture || 'https://via.placeholder.com/30'; // fallback to placeholder
+            updateUserUI(name, picture);
+
+            // Save user data to localStorage
+            localStorage.setItem('amazonUser', JSON.stringify({ name, picture }));
+        })
+        .catch(err => {
+            console.error('Failed to fetch Amazon profile', err);
+        });
+    });
+    return false;
+};
