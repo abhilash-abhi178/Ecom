@@ -50,7 +50,6 @@ function createHeader(user) {
         loginLink.href = 'login.html'; 
         loginLink.textContent = 'Login';
         
-        // SAVE redirect URL before going to login page
         loginLink.addEventListener('click', (e) => {
             e.preventDefault(); // Stop default <a> click
             localStorage.setItem('redirectAfterLogin', window.location.href); // Save current page
@@ -74,11 +73,11 @@ function createHeader(user) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const storedUser = JSON.parse(localStorage.getItem('user')); // { name: 'John' }
+    const storedUser = JSON.parse(localStorage.getItem('user'));
     const headerElement = createHeader(storedUser);
     document.body.insertBefore(headerElement, document.body.firstChild);
 
-    // --- Handle post-login redirect if needed ---
+    // Handle post-login redirect if needed
     if (window.location.pathname.endsWith('login.html')) {
         const user = JSON.parse(localStorage.getItem('user'));
         if (user) {
@@ -87,28 +86,38 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = redirectUrl;
         }
     }
+
+    // PWA Service Worker registration
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/service-worker.js')
+            .then(reg => console.log('Service worker registered.', reg))
+            .catch(err => console.error('Service worker registration failed:', err));
+    }
+
+    // Lazy load non-critical JavaScript
+    requestIdleCallback(() => {
+        import('./components/LazyComponent.js').then((module) => {
+            const LazyComponent = module.default;
+            // Optional: you can use LazyComponent here
+        });
+    });
 });
 
-    document.getElementById('LoginWithAmazon').onclick = function() {
-        var options = { 
-            scope: 'profile' 
-        };
-
-        // Save the page user was on
-        localStorage.setItem('redirectAfterLogin', window.location.href);
-
-        amazon.Login.authorize(options, function(response) {
-            if (response.error) {
-                alert('OAuth error: ' + response.error);
-                return;
-            }
-            console.log('Amazon Access Token:', response.access_token);
-            
-            // Redirect to a lightweight processing page (optional) or directly reload
-            window.location.href = "amazon-auth-success.html?access_token=" + response.access_token;
-        });
-
-        return false;
+document.getElementById('LoginWithAmazon').onclick = function() {
+    var options = { 
+        scope: 'profile' 
     };
 
+    localStorage.setItem('redirectAfterLogin', window.location.href);
 
+    amazon.Login.authorize(options, function(response) {
+        if (response.error) {
+            alert('OAuth error: ' + response.error);
+            return;
+        }
+        console.log('Amazon Access Token:', response.access_token);
+        window.location.href = "amazon-auth-success.html?access_token=" + response.access_token;
+    });
+
+    return false;
+};
