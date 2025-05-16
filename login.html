@@ -7,6 +7,12 @@
     <link rel="icon" type="image/x-icon" href="logo.png">
     <link rel="stylesheet" href="style.css">
 
+    <!-- Google reCAPTCHA -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+    <!-- Google Sign-In -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
     <!-- Your site scripts -->
     <script src="script.js" defer></script>
     <script src="header.js" defer></script>
@@ -14,9 +20,6 @@
 
     <!-- Google Adsense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1576490438435442" crossorigin="anonymous"></script>
-
-    <!-- Google reCAPTCHA -->
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 
 <body>
@@ -28,13 +31,29 @@
         <input type="password" id="password" placeholder="Password" required>
 
         <!-- Google reCAPTCHA widget -->
-        <div class="g-recaptcha" data-sitekey="6LdsHD0rAAAAADyqD64KbH4aK9F9RSTWTwDIB4gN"></div>
+        <div class="g-recaptcha" data-sitekey="YOUR_SITE_KEY_HERE"></div>
 
         <button type="submit">Login</button>
     </form>
 
+    <!-- Google Sign-In -->
+    <div style="text-align:center; margin-top: 20px;">
+        <div id="g_id_onload"
+             data-client_id="1071786232789-bu287pl66hm86fo72sjbfljvjs73c7ca.apps.googleusercontent.com"
+             data-callback="handleCredentialResponse">
+        </div>
+        <div class="g_id_signin"
+             data-type="standard"
+             data-size="large"
+             data-theme="outline"
+             data-text="sign_in_with"
+             data-shape="rectangular"
+             data-logo_alignment="left">
+        </div>
+    </div>
+
+    <!-- Amazon Login Button -->
     <div style="text-align:center; margin-top:20px;">
-        <!-- Amazon Login Button -->
         <a href="#" id="LoginWithAmazon">
             <img border="0" alt="Login with Amazon"
                  src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_156x32.png"
@@ -49,11 +68,10 @@
 <!-- Amazon SDK Loader and Setup -->
 <script type="text/javascript">
     window.onAmazonLoginReady = function() {
-        amazon.Login.setClientId('amzn1.application-oa2-client.b4f87693d14b4c82a628824194ba48de'); // Replace with your real Client ID
+        amazon.Login.setClientId('amzn1.application-oa2-client.b4f87693d14b4c82a628824194ba48de');
     };
-
     (function(d) {
-        var a = d.createElement('script'); 
+        var a = d.createElement('script');
         a.type = 'text/javascript';
         a.async = true;
         a.id = 'amazon-login-sdk';
@@ -66,21 +84,13 @@
 <script type="text/javascript">
     document.getElementById('LoginWithAmazon').onclick = function() {
         var options = { scope: 'profile' };
-
-        // Save current page URL before starting Amazon login
         localStorage.setItem('redirectAfterLogin', window.location.href);
-
         amazon.Login.authorize(options, function(response) {
             if (response.error) {
                 alert('OAuth error: ' + response.error);
                 return;
             }
-            console.log('Amazon Access Token:', response.access_token);
-
-            // Save the access token temporarily
             localStorage.setItem('amazon_access_token', response.access_token);
-
-            // Redirect to a special page to fetch profile
             var redirectUrl = localStorage.getItem('redirectAfterLogin') || '/';
             window.location.href = redirectUrl + '?access_token=' + response.access_token;
         });
@@ -88,12 +98,11 @@
     };
 </script>
 
-<!-- Handle Access Token and Fetch Amazon Profile -->
+<!-- Handle Amazon Access Token -->
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', () => {
         const urlParams = new URLSearchParams(window.location.search);
         const accessToken = urlParams.get('access_token');
-
         if (accessToken) {
             fetch('https://api.amazon.com/user/profile', {
                 headers: {
@@ -102,28 +111,45 @@
             })
             .then(response => response.json())
             .then(profile => {
-                console.log('Amazon Profile:', profile);
-                // Save user details into localStorage
                 const user = {
                     name: profile.name,
                     email: profile.email
                 };
                 localStorage.setItem('user', JSON.stringify(user));
-
-                // Clean URL (remove access_token from URL)
                 window.history.replaceState({}, document.title, window.location.pathname);
-
-                // Optionally, reload the page to update UI
                 window.location.reload();
             })
-            .catch(error => {
-                console.error('Failed to fetch Amazon profile:', error);
-            });
+            .catch(error => console.error('Failed to fetch Amazon profile:', error));
         }
     });
 </script>
 
-<!-- Optional client-side reCAPTCHA check -->
+<!-- Google Login Response Handler -->
+<script>
+function handleCredentialResponse(response) {
+    const token = response.credential;
+    console.log("Google ID Token:", token);
+
+    // Save token or send it to backend for verification
+    localStorage.setItem('google_id_token', token);
+
+    // Optionally decode payload (client-side use only)
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    console.log('Google user:', payload);
+
+    const user = {
+        name: payload.name,
+        email: payload.email,
+        picture: payload.picture
+    };
+    localStorage.setItem('user', JSON.stringify(user));
+
+    // Redirect or update UI
+    window.location.reload();
+}
+</script>
+
+<!-- reCAPTCHA Validation -->
 <script>
 document.getElementById('login-form').addEventListener('submit', function(e) {
     const recaptchaResponse = grecaptcha.getResponse();
