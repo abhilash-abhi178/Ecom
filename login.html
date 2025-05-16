@@ -22,6 +22,7 @@
 <body>
   <main class="login">
     <h1 style="text-align:center;">Login</h1>
+
     <form id="login-form">
       <input type="text" id="username" placeholder="Username" required />
       <input type="password" id="password" placeholder="Password" required />
@@ -101,9 +102,13 @@
           };
           localStorage.setItem('user', JSON.stringify(user));
           window.history.replaceState({}, document.title, window.location.pathname);
+          alert('Amazon login successful!');
           window.location.reload();
         })
-        .catch(error => console.error('Failed to fetch Amazon profile:', error));
+        .catch(error => {
+          console.error('Failed to fetch Amazon profile:', error);
+          alert('Amazon login failed. Please try again.');
+        });
       }
     });
   </script>
@@ -120,23 +125,34 @@
         method: 'POST',
         body: formData
       })
-        .then(res => res.json())
-        .then(data => {
-          if (data.status === 'success') {
-            console.log('Logged in:', data.user);
-            localStorage.setItem('user', JSON.stringify(data.user));
-            window.location.reload();
-          } else {
-            alert(data.message || 'Login failed');
-          }
-        });
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 'success') {
+          console.log('Logged in:', data.user);
+          localStorage.setItem('user', JSON.stringify(data.user));
+          alert('Google login successful!');
+          // Redirect back or reload
+          const redirectUrl = localStorage.getItem('redirectAfterLogin') || '/';
+          localStorage.removeItem('redirectAfterLogin');
+          window.location.href = redirectUrl;
+        } else {
+          alert(data.message || 'Login failed');
+        }
+      })
+      .catch(() => alert('Login failed due to network error.'));
     }
 
-    // Optional: Handle form submission normally with username/password (no recaptcha)
+    // Form submit placeholder (not implemented)
     document.getElementById('login-form').addEventListener('submit', function (e) {
-      // You can add your username/password login logic here or prevent form submission
       e.preventDefault();
       alert('Username/password login not implemented yet.');
+    });
+
+    // Save redirect URL before showing login page (for Google & Amazon)
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!localStorage.getItem('redirectAfterLogin')) {
+        localStorage.setItem('redirectAfterLogin', window.location.href);
+      }
     });
   </script>
 </body>
