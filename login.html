@@ -7,9 +7,6 @@
   <link rel="icon" type="image/x-icon" href="logo.png"/>
   <link rel="stylesheet" href="style.css" />
 
-  <!-- Google reCAPTCHA v2 -->
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-
   <!-- Google Sign-In -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
@@ -28,10 +25,6 @@
     <form id="login-form">
       <input type="text" id="username" placeholder="Username" required />
       <input type="password" id="password" placeholder="Password" required />
-
-      <!-- reCAPTCHA widget -->
-      <div class="g-recaptcha" data-sitekey="YOUR_RECAPTCHA_SITE_KEY_HERE"></div>
-
       <button type="submit">Login</button>
     </form>
 
@@ -119,16 +112,9 @@
   <script>
     function handleCredentialResponse(response) {
       const googleIdToken = response.credential;
-      const recaptchaToken = grecaptcha.getResponse();
-
-      if (!recaptchaToken) {
-        alert("Please complete the reCAPTCHA");
-        return;
-      }
 
       const formData = new URLSearchParams();
       formData.append('id_token', googleIdToken);
-      formData.append('recaptcha_token', recaptchaToken);
 
       fetch('/google_login_handler.php', {
         method: 'POST',
@@ -146,13 +132,11 @@
         });
     }
 
-    // Optional: Handle form submission normally with username/password + reCAPTCHA
+    // Optional: Handle form submission normally with username/password (no recaptcha)
     document.getElementById('login-form').addEventListener('submit', function (e) {
-      const recaptchaToken = grecaptcha.getResponse();
-      if (!recaptchaToken) {
-        e.preventDefault();
-        alert("Please verify you're not a robot.");
-      }
+      // You can add your username/password login logic here or prevent form submission
+      e.preventDefault();
+      alert('Username/password login not implemented yet.');
     });
   </script>
 </body>
