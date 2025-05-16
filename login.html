@@ -22,28 +22,40 @@
 <body>
 <main class="login">
     <h1 style="text-align:center;">Login</h1>
-    <form id="login-form">
-        <input type="text" id="username" placeholder="Username" required />
-        <input type="password" id="password" placeholder="Password" required />
-        <button type="submit">Login</button>
-    </form>
 
-    <div style="text-align:center; margin-top:20px;">
-        <!-- Amazon Login Button -->
-        <a href="#" id="LoginWithAmazon">
-            <img
-                border="0"
-                alt="Login with Amazon"
-                src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_156x32.png"
-                width="156"
-                height="32"
-            />
-        </a>
+    <!-- Container for login form or profile info -->
+    <div id="login-container" style="text-align:center;">
+        <!-- Default login form -->
+        <form id="login-form">
+            <input type="text" id="username" placeholder="Username" required />
+            <input type="password" id="password" placeholder="Password" required />
+            <button type="submit">Login</button>
+        </form>
+
+        <div style="margin-top: 20px;">
+            <!-- Amazon Login Button -->
+            <a href="#" id="LoginWithAmazon">
+                <img
+                    border="0"
+                    alt="Login with Amazon"
+                    src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_156x32.png"
+                    width="156"
+                    height="32"
+                />
+            </a>
+        </div>
+
+        <div style="margin-top: 20px;">
+            <!-- Google Sign-In Button -->
+            <div id="g_id_signin"></div>
+        </div>
     </div>
 
-    <div style="text-align:center; margin-top:20px;">
-        <!-- Google Sign-In Button -->
-        <div id="g_id_signin"></div>
+    <!-- Profile info + logout, hidden by default -->
+    <div id="profile-container" style="display:none; margin-top: 20px; text-align:center;">
+        <img id="profile-picture" src="" alt="Profile Picture" style="border-radius:50%; width:80px; height:80px;" />
+        <h2 id="profile-name"></h2>
+        <button id="logout-button" style="cursor:pointer; padding: 8px 16px; font-size: 16px;">Logout</button>
     </div>
 </main>
 
@@ -65,6 +77,7 @@
         d.getElementById('amazon-root').appendChild(a);
     })(document);
 
+    // Amazon Login button click
     document.getElementById('LoginWithAmazon').onclick = function () {
         var options = { scope: 'profile' };
         localStorage.setItem('redirectAfterLogin', window.location.href);
@@ -74,7 +87,6 @@
                 alert('OAuth error: ' + response.error);
                 return;
             }
-            console.log('Amazon Access Token:', response.access_token);
             localStorage.setItem('amazon_access_token', response.access_token);
             var redirectUrl = localStorage.getItem('redirectAfterLogin') || '/';
             window.location.href = redirectUrl + '?access_token=' + response.access_token;
@@ -82,41 +94,11 @@
         return false;
     };
 
-    // On page load, handle Amazon access token in URL
-    document.addEventListener('DOMContentLoaded', () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const accessToken = urlParams.get('access_token');
-
-        if (accessToken) {
-            fetch('https://api.amazon.com/user/profile', {
-                headers: {
-                    Authorization: 'Bearer ' + accessToken,
-                },
-            })
-                .then((response) => response.json())
-                .then((profile) => {
-                    console.log('Amazon Profile:', profile);
-                    const user = {
-                        name: profile.name,
-                        email: profile.email,
-                    };
-                    localStorage.setItem('user', JSON.stringify(user));
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                    window.location.reload();
-                })
-                .catch((error) => {
-                    console.error('Failed to fetch Amazon profile:', error);
-                });
-        }
-    });
-
-    // Google Login setup
+    // Google Login callback
     function handleCredentialResponse(response) {
-        // response.credential is the ID token JWT
         console.log('Google ID Token:', response.credential);
 
-        // You can decode the JWT or send it to your backend to verify and get user info
-        // For demo, we decode payload to get profile info client side (not secure for prod)
+        // Decode JWT to get profile info (client-side)
         const base64Url = response.credential.split('.')[1];
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
         const jsonPayload = decodeURIComponent(
@@ -130,17 +112,95 @@
         const profile = JSON.parse(jsonPayload);
         console.log('Google Profile:', profile);
 
+        // Save user data with a source tag so we know it's Google login
         const user = {
+            source: 'google',
             name: profile.name,
             email: profile.email,
             picture: profile.picture,
         };
         localStorage.setItem('user', JSON.stringify(user));
 
-        // Optionally, update UI or redirect
-        alert('Logged in as ' + user.name);
+        // Save current page for redirect after login
+        localStorage.setItem('redirectAfterLogin', window.location.href);
+        var redirectUrl = localStorage.getItem('redirectAfterLogin') || '/';
+        window.location.href = redirectUrl;
     }
 
+    // On page load - check login status for both Amazon and Google
+    document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const accessToken = urlParams.get('access_token');
+
+        // Handle Amazon access token in URL
+        if (accessToken) {
+            fetch('https://api.amazon.com/user/profile', {
+                headers: {
+                    Authorization: 'Bearer ' + accessToken,
+                },
+            })
+                .then((response) => response.json())
+                .then((profile) => {
+                    console.log('Amazon Profile:', profile);
+                    const user = {
+                        source: 'amazon',
+                        name: profile.name,
+                        email: profile.email,
+                        picture: null, // Amazon profile API doesn't provide picture by default
+                    };
+                    localStorage.setItem('user', JSON.stringify(user));
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    // Redirect to saved page or reload current
+                    var redirectUrl = localStorage.getItem('redirectAfterLogin') || '/';
+                    window.location.href = redirectUrl;
+                })
+                .catch((error) => {
+                    console.error('Failed to fetch Amazon profile:', error);
+                });
+            return; // Wait for redirect, do not proceed to UI setup now
+        }
+
+        // Show profile or login UI depending on login state
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        if (user && user.name) {
+            // Hide login container, show profile container
+            document.getElementById('login-container').style.display = 'none';
+            document.getElementById('profile-container').style.display = 'block';
+
+            // Show name
+            document.getElementById('profile-name').textContent = user.name;
+
+            // Show picture if available or default avatar
+            if (user.picture) {
+                document.getElementById('profile-picture').src = user.picture;
+            } else {
+                document.getElementById('profile-picture').src = 'default-avatar.png'; // Provide a default avatar image in your project folder
+            }
+        } else {
+            // Show login form/buttons if not logged in
+            document.getElementById('login-container').style.display = 'block';
+            document.getElementById('profile-container').style.display = 'none';
+        }
+    });
+
+    // Logout button functionality
+    document.getElementById('logout-button').onclick = function () {
+        // Clear user data and tokens
+        localStorage.removeItem('user');
+        localStorage.removeItem('amazon_access_token');
+
+        // If Google, revoke token (optional)
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user && user.source === 'google') {
+            google.accounts.id.disableAutoSelect();
+        }
+
+        // Reload page to show login form again
+        window.location.reload();
+    };
+
+    // Initialize Google Sign-In button
     window.onload = function () {
         google.accounts.id.initialize({
             client_id: '1071786232789-bu287pl66hm86fo72sjbfljvjs73c7ca.apps.googleusercontent.com',
@@ -150,8 +210,7 @@
             theme: 'outline',
             size: 'large',
         });
-        // Optional: prompt the user to sign in automatically
-        // google.accounts.id.prompt();
+        // Optional: google.accounts.id.prompt();
     };
 </script>
 </body>
