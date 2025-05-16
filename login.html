@@ -14,6 +14,9 @@
 
     <!-- Google Adsense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1576490438435442" crossorigin="anonymous"></script>
+
+    <!-- Google reCAPTCHA -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 
 <body>
@@ -23,6 +26,10 @@
     <form id="login-form">
         <input type="text" id="username" placeholder="Username" required>
         <input type="password" id="password" placeholder="Password" required>
+
+        <!-- Google reCAPTCHA widget -->
+        <div class="g-recaptcha" data-sitekey="6LdsHD0rAAAAADyqD64KbH4aK9F9RSTWTwDIB4gN"></div>
+
         <button type="submit">Login</button>
     </form>
 
@@ -114,6 +121,17 @@
             });
         }
     });
+</script>
+
+<!-- Optional client-side reCAPTCHA check -->
+<script>
+document.getElementById('login-form').addEventListener('submit', function(e) {
+    const recaptchaResponse = grecaptcha.getResponse();
+    if (!recaptchaResponse) {
+        e.preventDefault();
+        alert("Please verify that you're not a robot.");
+    }
+});
 </script>
 
 </body>
