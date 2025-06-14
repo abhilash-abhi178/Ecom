@@ -22,7 +22,7 @@ function createHeader(user) {
     homeLink.textContent = 'Home';
 
     const cartLink = document.createElement('a');
-    cartLink.href = '#'; 
+    cartLink.href = '/cart.html'; 
     cartLink.textContent = 'Cart';
 
     nav.appendChild(homeLink);
