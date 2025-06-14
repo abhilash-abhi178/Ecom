@@ -1,52 +1,61 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ED-Contact us</title>
-    <link rel="icon" type="image/x-icon" href="logo.png">
-    <link rel="stylesheet" href="style.css">
-     <script src="script.js"></script>
-	<script src="footer.js"></script>
-	<script src="header.js"></script>
-    
-    <!-- Google Adsense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1576490438435442" crossorigin="anonymous"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ED - Contact Us</title>
+  <link rel="icon" href="logo.png" type="image/x-icon" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="header.js" defer></script>
+  <script src="footer.js" defer></script>
+  <script src="script.js" defer></script>
 
- 
+  <!-- Google Adsense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1576490438435442" crossorigin="anonymous"></script>
 </head>
 
 <body>
-    <!-- Splash Screen -->
-    <div id="splash-screen">
-        <div id="splash-logo">
-            <img src="logo.gif" alt="Loading...">
-        </div>
+  <!-- Splash Screen -->
+  <div id="splash-screen">
+    <div id="splash-logo">
+      <img src="logo.gif" alt="Loading..." />
     </div>
-<main class="contact-us">
+  </div>
+
+  <!-- Header will be loaded via header.js -->
+
+  <main class="contact-us">
     <h2>Contact Us</h2>
-    <p>We'd love to hear from you! Please fill out the form below or use the other contact methods.</p>
+    <p>We'd love to hear from you! Please fill out the form below or reach us using the contact methods provided.</p>
+
+    <!-- Netlify-compatible contact form -->
     <form name="contact" method="POST" data-netlify="true">
-  <input type="hidden" name="form-name" value="contact" />
+      <input type="hidden" name="form-name" value="contact" />
+
       <div class="form-group">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required />
       </div>
+
       <div class="form-group">
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required />
       </div>
+
       <div class="form-group">
         <label for="subject">Subject:</label>
         <input type="text" id="subject" name="subject" />
       </div>
+
       <div class="form-group">
         <label for="message">Message:</label>
         <textarea id="message" name="message" rows="5" required></textarea>
       </div>
+
       <button type="submit">Send Message</button>
     </form>
 
+    <!-- Alternate contact methods -->
     <section style="margin-top: 30px; text-align: left;">
       <h2>Other Ways to Reach Us</h2>
       <ul>
@@ -58,7 +67,7 @@
       </ul>
     </section>
   </main>
-    
+
+  <!-- Footer will be loaded via footer.js -->
 </body>
 </html>
-
