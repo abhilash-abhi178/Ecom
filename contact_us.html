@@ -26,7 +26,8 @@
 <main class="contact-us">
     <h2>Contact Us</h2>
     <p>We'd love to hear from you! Please fill out the form below or use the other contact methods.</p>
-    <form action="/submit-contact-form" method="POST">
+    <form name="contact" method="POST" data-netlify="true">
+  <input type="hidden" name="form-name" value="contact" />
       <div class="form-group">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required />
