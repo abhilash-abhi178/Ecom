@@ -34,7 +34,7 @@ function createFooter() {
 
     const supportSection = createFooterSection('SUPPORT', [
         { text: 'FAQ', href: 'faq.html' },
-        { text: 'Forgot Password', href: 'fp.html' },
+        
     ]);
 
     const followSection = createFooterSection('Follow Us On:', [
