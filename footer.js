@@ -26,7 +26,7 @@ function createFooter() {
     const policiesSection = createFooterSection('POLICIES', [
         { text: 'About Us', href: 'aboutus.html' },
         { text: 'Contact Us', href: 'contact_us.html' },
-        { text: 'Reviews', href: '#' },
+       
         { text: 'Terms & Conditions', href: 'terms&conds.html' },
         { text: 'Privacy Policy', href: 'privacy_policy.html' },
         { text: 'Cookie Policy', href: 'cookie_policy.html' },
@@ -39,9 +39,9 @@ function createFooter() {
 
     const followSection = createFooterSection('Follow Us On:', [
         { text: 'Instagram', href: 'www.instagram.com/@ecom._.deals' },
-        { text: 'Facebook', href: '#' },
-        { text: 'Telegram', href: '#' },
-        { text: 'X(Twitter)', href: '#' },
+        
+        { text: 'Telegram', href: 'https://t.me/ecom_deals21' },
+        
     ]);
 
     footerContainer.appendChild(policiesSection);
