@@ -1,30 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Shopping Cart</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ED - Cart</title>
+  <link rel="icon" href="logo.png" type="image/x-icon" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="header.js" defer></script>
+  <script src="footer.js" defer></script>
+  <script src="script.js" defer></script>
+
+  <!-- Google Adsense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1576490438435442" crossorigin="anonymous"></script>
 </head>
+
 <body>
+  <!-- Splash Screen -->
+  <div id="splash-screen">
+    <div id="splash-logo">
+      <img src="logo.gif" alt="Loading..." />
+    </div>
+  </div>
 
-<header class="navbar">
-    <div class="logo">ShopSmart</div>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="checkout.html">Checkout</a>
-        <a href="login.html">Login</a>
-    </nav>
-</header>
+  <!-- Header will be loaded via header.js -->
 
-<main class="cart">
-    <h1>Your Cart</h1>
-     Proceed to Checkout
-</main>
+  <main class="cart-message" style="text-align: center; padding: 50px 20px;">
+    <h2>Cart Not Available</h2>
+    <p>We’re sorry, but the cart feature is not available for some users at the moment.</p>
+    <p>Please proceed with the product links provided on the homepage to complete your purchase on Amazon, Flipkart, or Meesho.</p>
+    <p>We apologize for the inconvenience and thank you for your understanding.</p>
+    <a href="index.html" style="margin-top: 20px; display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px;">Back to Home</a>
+  </main>
 
-<footer>
-    <p>&copy; 2025 ShopSmart. All rights reserved.</p>
-</footer>
-
-<script src="script.js"></script>
+  <!-- Footer will be loaded via footer.js -->
 </body>
 </html>
