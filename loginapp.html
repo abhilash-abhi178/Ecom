@@ -15,6 +15,9 @@
     h1 {
       margin-bottom: 30px;
     }
+    #login-buttons {
+      margin-bottom: 30px; /* Space below buttons */
+    }
     #login-buttons img {
       cursor: pointer;
       margin: 16px;
@@ -22,6 +25,35 @@
     #g_id_signin {
       display: inline-block;
       margin-top: 16px;
+    }
+    /* New styles for the success message container */
+    #success-message-container {
+      display: none; /* Hidden by default */
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      max-width: 400px;
+      margin: 50px auto;
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    #success-message-container p {
+      font-size: 18px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    #continue-button {
+      background-color: #4CAF50; /* Green */
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+    #continue-button:hover {
+      background-color: #45a049;
     }
   </style>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -43,9 +75,20 @@
     <div id="g_id_signin"></div>
   </div>
 
+  <div id="success-message-container">
+    <p id="welcome-message"></p>
+    <button id="continue-button">Continue to App</button>
+  </div>
+
   <div id="amazon-root"></div>
 
   <script>
+    // Get references to elements
+    const loginButtonsDiv = document.getElementById("login-buttons");
+    const successMessageContainer = document.getElementById("success-message-container");
+    const welcomeMessage = document.getElementById("welcome-message");
+    const continueButton = document.getElementById("continue-button");
+
     // Load Amazon SDK
     (function (d) {
       var a = d.createElement("script");
@@ -66,7 +109,7 @@
         {
           scope: "profile",
           response_type: "token",
-          redirect_uri: "https://ecomdeals.netlify.app/loginforapp.html"
+          redirect_uri: "https://ecomdeals.netlify.app/loginforapp.html" // Make sure this is correctly configured in Amazon's console
         },
         function (response) {
           if (response.error) {
@@ -84,10 +127,11 @@
             .then(profile => {
               const name = encodeURIComponent(profile.name || "AmazonUser");
               const email = encodeURIComponent(profile.email || "");
-              // No profile picture URL typically available in basic Amazon profile scope.
-              // To get a profile image from Amazon, you would need to investigate their API documentation
-              // for specific scopes or endpoints that provide image data.
-              window.location.href = `myapp://authcallback#source=amazon&name=${name}&email=${email}&access_token=${token}`;
+              const profileImageUrl = ""; // Amazon basic profile scope usually doesn't provide this.
+                                        // You would need to check Amazon's docs for how to get it.
+
+              // Call the new function to display the continue screen
+              displayContinueScreen("amazon", name, email, token, profileImageUrl);
             })
             .catch(err => {
               alert("Failed to fetch Amazon profile");
@@ -111,14 +155,33 @@
       const profile = JSON.parse(jsonPayload);
       const name = encodeURIComponent(profile.name || "GoogleUser");
       const email = encodeURIComponent(profile.email || "");
-      const picture = encodeURIComponent(profile.picture || ""); // This extracts the URL
+      const profileImageUrl = encodeURIComponent(profile.picture || ""); // This extracts the URL
       const token = encodeURIComponent(response.credential);
 
-      // --- CHANGE HERE: Renamed 'picture' to 'profile_image_url' for consistency with Android app ---
-      window.location.href = `myapp://authcallback#source=google&name=${name}&email=${email}&profile_image_url=${picture}&access_token=${token}`;
+      // Call the new function to display the continue screen
+      displayContinueScreen("google", name, email, token, profileImageUrl);
     }
 
-    // Initialize Google Sign-In
+    // NEW: Function to display the continue screen and handle redirection
+    function displayContinueScreen(source, name, email, token, profileImageUrl) {
+      // Hide login buttons
+      loginButtonsDiv.style.display = "none";
+      document.querySelector('h1').style.display = "none"; // Hide main title too
+
+      // Set welcome message
+      welcomeMessage.textContent = `Hello ${decodeURIComponent(name)}, please press continue to go back to app Ecom deals`;
+
+      // Show the success message container
+      successMessageContainer.style.display = "block";
+
+      // Set up the continue button click listener
+      continueButton.onclick = function() {
+        const redirectUrl = `myapp://authcallback#source=${source}&name=${name}&email=${email}&profile_image_url=${profileImageUrl}&access_token=${token}`;
+        window.location.href = redirectUrl;
+      };
+    }
+
+    // Initialize Google Sign-In on page load
     window.onload = function () {
       google.accounts.id.initialize({
         client_id: "1071786232789-bu287pl66hm86fo72sjbfljvjs73c7ca.apps.googleusercontent.com",
