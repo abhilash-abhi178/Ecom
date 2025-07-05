@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.example.loginapp",
+      "sha256_cert_fingerprints": [
+        "5B:D0:5A:76:F9:29:C0:26:A9:22:0F:4F:56:76:E5:64:61:D8:A5:AC:F3:2C:FE:2A:CC:38:31:E7:C8:A7:B0:32"  // <-- Replace this with your real SHA-256
+      ]
+    }
+  }
+]
