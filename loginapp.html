@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ecom-Deals App Login</title>
+  <link rel="icon" href="logo.png" />
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f9f9f9;
+      text-align: center;
+      margin-top: 60px;
+    }
+    h1 {
+      margin-bottom: 30px;
+    }
+    #login-buttons img {
+      cursor: pointer;
+      margin: 16px;
+    }
+    #g_id_signin {
+      display: inline-block;
+      margin-top: 16px;
+    }
+  </style>
+  <!-- Google -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+
+  <h1>Login to Ecom-Deals App</h1>
+
+  <div id="login-buttons">
+    <!-- Amazon Login -->
+    <a href="#" id="LoginWithAmazon">
+      <img
+        src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_156x32.png"
+        width="156"
+        height="32"
+        alt="Login with Amazon"
+      />
+    </a>
+
+    <!-- Google Login -->
+    <div id="g_id_signin"></div>
+  </div>
+
+  <!-- SDK container -->
+  <div id="amazon-root"></div>
+
+  <script>
+    // Load Amazon SDK
+    (function (d) {
+      var a = d.createElement("script");
+      a.type = "text/javascript";
+      a.async = true;
+      a.src = "https://assets.loginwithamazon.com/sdk/na/login1.js";
+      d.getElementById("amazon-root").appendChild(a);
+    })(document);
+
+    // Set Amazon Client ID
+    window.onAmazonLoginReady = function () {
+      amazon.Login.setClientId("amzn1.application-oa2-client.b4f87693d14b4c82a628824194ba48de");
+    };
+
+    // Amazon login click
+    document.getElementById("LoginWithAmazon").onclick = function () {
+      amazon.Login.authorize(
+        {
+          scope: "profile",
+          response_type: "token",
+          redirect_uri: "https://ecomdeals.netlify.app/loginforapp.html"
+        },
+        function (response) {
+          if (response.error) {
+            alert("Amazon Login Failed: " + response.error);
+            return;
+          }
+
+          const token = response.access_token;
+          fetch("https://api.amazon.com/user/profile", {
+            headers: {
+              Authorization: "Bearer " + token
+            }
+          })
+            .then(res => res.json())
+            .then(profile => {
+              const name = encodeURIComponent(profile.name || "AmazonUser");
+              const email = encodeURIComponent(profile.email || "");
+              window.location.href = `myapp://authcallback#source=amazon&name=${name}&email=${email}&access_token=${token}`;
+            })
+            .catch(err => {
+              alert("Failed to fetch Amazon profile");
+            });
+        }
+      );
+      return false;
+    };
+
+    // Handle Google response
+    function handleCredentialResponse(response) {
+      const base64Url = response.credential.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split('')
+          .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+          .join('')
+      );
+
+      const profile = JSON.parse(jsonPayload);
+      const name = encodeURIComponent(profile.name || "GoogleUser");
+      const email = encodeURIComponent(profile.email || "");
+      const picture = encodeURIComponent(profile.picture || "");
+      const token = encodeURIComponent(response.credential);
+
+      window.location.href = `myapp://authcallback#source=google&name=${name}&email=${email}&picture=${picture}&access_token=${token}`;
+    }
+
+    // Initialize Google Sign-In
+    window.onload = function () {
+      google.accounts.id.initialize({
+        client_id: "1071786232789-bu287pl66hm86fo72sjbfljvjs73c7ca.apps.googleusercontent.com",
+        callback: handleCredentialResponse
+      });
+
+      google.accounts.id.renderButton(
+        document.getElementById("g_id_signin"),
+        { theme: "outline", size: "large" }
+      );
+    };
+  </script>
+</body>
+</html>
