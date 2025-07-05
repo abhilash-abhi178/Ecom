@@ -24,7 +24,6 @@
       margin-top: 16px;
     }
   </style>
-  <!-- Google -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
@@ -32,7 +31,6 @@
   <h1>Login to Ecom-Deals App</h1>
 
   <div id="login-buttons">
-    <!-- Amazon Login -->
     <a href="#" id="LoginWithAmazon">
       <img
         src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_156x32.png"
@@ -42,11 +40,9 @@
       />
     </a>
 
-    <!-- Google Login -->
     <div id="g_id_signin"></div>
   </div>
 
-  <!-- SDK container -->
   <div id="amazon-root"></div>
 
   <script>
@@ -88,6 +84,9 @@
             .then(profile => {
               const name = encodeURIComponent(profile.name || "AmazonUser");
               const email = encodeURIComponent(profile.email || "");
+              // No profile picture URL typically available in basic Amazon profile scope.
+              // To get a profile image from Amazon, you would need to investigate their API documentation
+              // for specific scopes or endpoints that provide image data.
               window.location.href = `myapp://authcallback#source=amazon&name=${name}&email=${email}&access_token=${token}`;
             })
             .catch(err => {
@@ -112,10 +111,11 @@
       const profile = JSON.parse(jsonPayload);
       const name = encodeURIComponent(profile.name || "GoogleUser");
       const email = encodeURIComponent(profile.email || "");
-      const picture = encodeURIComponent(profile.picture || "");
+      const picture = encodeURIComponent(profile.picture || ""); // This extracts the URL
       const token = encodeURIComponent(response.credential);
 
-      window.location.href = `myapp://authcallback#source=google&name=${name}&email=${email}&picture=${picture}&access_token=${token}`;
+      // --- CHANGE HERE: Renamed 'picture' to 'profile_image_url' for consistency with Android app ---
+      window.location.href = `myapp://authcallback#source=google&name=${name}&email=${email}&profile_image_url=${picture}&access_token=${token}`;
     }
 
     // Initialize Google Sign-In
